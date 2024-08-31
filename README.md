@@ -1,128 +1,62 @@
-<div>
-  <h3 align="center">A full stack Threads Clone</h3>
+<h1>Multi Threaded Proxy Server with and without Cache</h1>
 
-</div>
+This project is implemented using `C` and Parsing of HTTP referred from <a href = "https://github.com/vaibhavnaagar/proxy-server"> Proxy Server </a>
 
-## 📋 <a name="table">Table of Contents</a>
 
-1. 🤖 [Introduction](#introduction)
-2. ⚙️ [Tech Stack](#tech-stack)
-3. 🔋 [Features](#features)
-4. 🤸 [Quick Start](#quick-start)
+## Index
 
-## <a name="introduction">🤖 Introduction</a>
+- [Project Theory](https://github.com/Lovepreet-Singh-LPSK/MultiThreadedProxyServerClient#project-theory)
+- [How to Run](https://github.com/Lovepreet-Singh-LPSK/MultiThreadedProxyServerClient#How-to-Run)
+- [Demo](https://github.com/Lovepreet-Singh-LPSK/MultiThreadedProxyServerClient#Demo)
+- [Contributing](https://github.com/Lovepreet-Singh-LPSK/MultiThreadedProxyServerClient#contributing)
 
-Build a full stack Threads clone using Next.js 14+ with a redesigned look transformed from a Figma design, user interaction to community management, technical implementation, and various features, including nested deep comments, notifications, real-time-search, and more.
+## Project Theory
 
-## <a name="tech-stack">⚙️ Tech Stack</a>
 
-- Next.js
-- MongoDB
-- Shadcn UI
-- TailwindCSS
-- Clerk
-- Webhooks
-- Serverless APIs
-- React Hook Form
-- Zod
-- TypeScript
 
-## <a name="features">🔋 Features</a>
+##### Introduction
 
-👉 **Authentication**: Authentication using Clerk for email, password, and social logins (Google and GitHub) with a comprehensive profile management system.
+##### Basic Working Flow of the Proxy Server:
+![](https://github.com/nothing-available/MultiThreadedProxyServerClient/pics/UML.JPG)
 
-👉 **Visually Appealing Home Page**: A visually appealing home page showcasing the latest threads for an engaging user experience.
+##### How did we implement Multi-threading?
+- Used Semaphore instead of Condition Variables and pthread_join() and pthread_exit() function. 
+- pthread_join() requires us to pass the thread id of the the thread to wait for. 
+- Semaphore’s sem_wait() and sem_post() doesn’t need any parameter. So it is a better option. 
 
-👉 **Create Thread Page**: A dedicated page for users to create threads, fostering community engagement
 
-👉 **Commenting Feature**: A commenting feature to facilitate discussions within threads.
+##### Motivation/Need of Project
+- To Understand → 
+  - The working of requests from our local computer to the server.
+  - The handling of multiple client requests from various clients.
+  - Locking procedure for concurrency.
+  - The concept of cache and its different functions that might be used by browsers.
+- Proxy Server do → 
+  - It speeds up the process and reduces the traffic on the server side.
+  - It can be used to restrict user from accessing specific websites.
+  - A good proxy will change the IP such that the server wouldn’t know about the client who sent the request.
+  - Changes can be made in Proxy to encrypt the requests, to stop anyone accessing the request illegally from your client.
+ 
+##### OS Component Used ​
+- Threading
+- Locks 
+- Semaphore
+- Cache (LRU algorithm is used in it)
 
-👉 **Nested Commenting**: Commenting system with nested threads, providing a structured conversation flow.
+##### Limitations ​
+- If a URL opens multiple clients itself, then our cache will store each client’s response as a separate element in the linked list. So, during retrieval from the cache, only a chunk of response will be send and the website will not open
+- Fixed size of cache element, so big websites may not be stored in cache. 
 
-👉 **User Search with Pagination**: A user search feature with pagination for easy exploration and discovery of other users.
+##### How this project can be extended? ​
+- This code can be implemented using multiprocessing that can speed up the process with parallelism.
+- We can decide which type of websites should be allowed by extending the code.
+- We can implement requests like POST with this code.
 
-👉 **Activity Page**: Display notifications on the activity page when someone comments on a user's thread, enhancing user engagement.
 
-👉 **Profile Page**: User profile pages for showcasing information and enabling modification of profile settings.
 
-👉 **Create and Invite to Communities**: Allow users to create new communities and invite others using customizable template emails.
 
-👉 **Community Member Management**: A user-friendly interface to manage community members, allowing role changes and removals.
 
-👉 **Admin-Specific Community Threads**: Enable admins to create threads specifically for their community.
 
-👉 **Community Search with Pagination**: A community search feature with pagination for exploring different communities.
 
-👉 **Community Profiles**: Display community profiles showcasing threads and members for a comprehensive overview.
 
-👉 **Figma Design Implementation**: Transform Figma designs into a fully functional application with pixel-perfect and responsive design.
 
-👉 **Blazing-Fast Performance**: Optimal performance and instantaneous page switching for a seamless user experience.
-
-👉 **Server Side Rendering**: Utilize Next.js with Server Side Rendering for enhanced performance and SEO benefits.
-
-👉 **MongoDB with Complex Schemas**: Handle complex schemas and multiple data populations using MongoDB.
-
-👉 **File Uploads with UploadThing**: File uploads using UploadThing for a seamless media sharing experience.
-
-👉 **Real-Time Events Listening**: Real-time events listening with webhooks to keep users updated.
-
-👉 **Middleware, API Actions, and Authorization**: Utilize middleware, API actions, and authorization for robust application security.
-
-👉 **Next.js Layout Route Groups**: New Next.js layout route groups for efficient routing
-
-👉 **Data Validation with Zod**: Data integrity with data validation using Zod
-
-👉 **Form Management with React Hook Form**: Efficient management of forms with React Hook Form for a streamlined user input experience.
-
-and many more, including code architecture and reusability
-
-## <a name="quick-start">🤸 Quick Start</a>
-
-Follow these steps to set up the project locally on your machine.
-
-**Prerequisites**
-
-Make sure you have the following installed on your machine:
-
-- [Git](https://git-scm.com/)
-- [Node.js](https://nodejs.org/en)
-- [npm](https://www.npmjs.com/) (Node Package Manager)
-
-**Cloning the Repository**
-
-```bash
-git clone https://github.com/nothing-available/threads.git
-cd threads
-```
-
-**Installation**
-
-Install the project dependencies using npm:
-
-```bash
-npm install
-```
-
-**Set Up Environment Variables**
-
-Create a new file named `.env` in the root of your project and add the following content:
-
-```env
-MONGODB_URL=
-CLERK_SECRET_KEY=
-UPLOADTHING_SECRET=
-UPLOADTHING_APP_ID=
-NEXT_CLERK_WEBHOOK_SECRET=
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
-```
-
-Replace the placeholder values with your actual credentials. You can obtain these credentials by signing up for the corresponding websites on [MongoDB](https://www.mongodb.com/), [Clerk](https://clerk.com/), and [Uploadthing](https://uploadthing.com/).
-
-**Running the Project**
-
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) in your browser to view the project.
