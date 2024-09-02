@@ -1,20 +1,37 @@
 #include "proxy_parse.h"
+
 #include <stdio.h>
+
 #include <stdlib.h>
+
 #include <string.h>
+
 #include <sys/types.h>
+
 #include <sys/socket.h>
+
 #include <netinet/in.h>
+
 #include <netdb.h>
+
 #include <arpa/inet.h>
+
 #include <unistd.h>
+
 #include <fcntl.h>
+
 #include <time.h>
+
 #include <sys/wait.h>
+
 #include <errno.h>
+
 #include <pthread.h>
+
 #include <semaphore.h>
+
 #include <time.h>
+
 
 
 #define MAX_BYTES 4096    //max allowed size of request/response
@@ -28,6 +45,8 @@
 
 
 typedef struct cache_element cache_element;
+
+
 
 struct cache_element{
 
@@ -157,7 +176,11 @@ int sendErrorMessage(int socket, int status_code)
 
 				  break;
 
+
+
 		default:  return -1;
+
+
 
 	}
 
@@ -173,7 +196,11 @@ int connectRemoteServer(char* host_addr, int port_num)
 
 	// Creating Socket for remote server ---------------------------
 
+
+
 	int remoteSocket = socket(AF_INET, SOCK_STREAM, 0);
+
+
 
 	if( remoteSocket < 0)
 
@@ -225,6 +252,8 @@ int connectRemoteServer(char* host_addr, int port_num)
 
 	// Connect to Remote server ----------------------------------------------------
 
+
+
 	if( connect(remoteSocket, (struct sockaddr*)&server_addr, (socklen_t)sizeof(server_addr)) < 0 )
 
 	{
@@ -234,6 +263,8 @@ int connectRemoteServer(char* host_addr, int port_num)
 		return -1;
 
 	}
+
+
 
 	return remoteSocket;
 
@@ -258,6 +289,7 @@ int handle_request(int clientSocket, struct ParsedRequest *request, char *buf, c
 	strcat(buf, "\r\n");
 
 
+
 	size_t len = strlen(buf);
 
 
@@ -267,6 +299,8 @@ int handle_request(int clientSocket, struct ParsedRequest *request, char *buf, c
 		printf("set header key not work\n");
 
 	}
+
+
 
 	if(ParsedHeader_get(request, "Host") == NULL)
 
@@ -280,6 +314,8 @@ int handle_request(int clientSocket, struct ParsedRequest *request, char *buf, c
 
 	}
 
+
+
 	if (ParsedRequest_unparse_headers(request, buf + len, (size_t)MAX_BYTES - len) < 0) {
 
 		printf("unparse failed\n");
@@ -287,6 +323,8 @@ int handle_request(int clientSocket, struct ParsedRequest *request, char *buf, c
 		//return -1;				// If this happens Still try to send request without header
 
 	}
+
+
 
 	int server_port = 80;				// Default Remote Server Port
 
@@ -1041,3 +1079,13 @@ int add_cache_element(char* data,int size,char* url){
     return ret;
 
 }
+
+
+
+
+
+
+
+
+
+
